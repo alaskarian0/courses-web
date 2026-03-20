@@ -10,6 +10,7 @@ import {
   ClipboardList,
   UserCheck,
   CalendarDays,
+  ClipboardCheck,
 } from "lucide-react";
 
 export interface NavItem {
@@ -59,6 +60,11 @@ export const navbarData: NavbarData = {
           title: "جدولة الدورات",
           url: "/scheduling",
           icon: CalendarDays,
+        },
+        {
+          title: "التقييمات",
+          url: "/assessments",
+          icon: ClipboardCheck,
         },
       ],
     },
