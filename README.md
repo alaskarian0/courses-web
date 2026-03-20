@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Courses Web
+
+A modern Arabic RTL course management system built with **Next.js 15**, **React 19**, and **TypeScript**.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (Turbopack) |
+| Language | TypeScript 5 |
+| UI Components | Shadcn/ui + Radix UI |
+| Styling | Tailwind CSS 4 |
+| State Management | Zustand 5 |
+| HTTP Client | Axios |
+| Charts | Recharts |
+| Form Validation | Zod 4 |
+| Icons | Lucide React |
+| Export | ExcelJS, XLSX |
+
+## Features
+
+- **Authentication** - Login, register, password change, temporary password handling
+- **Dashboard** - Interactive analytics with bar and pie charts
+- **Data Management** - Full CRUD operations with search, filtering, and pagination
+- **Reports** - Generate, print, and export reports to Excel
+- **Settings** - App configuration
+- **Role-based Access** - Permission-based navigation and actions
+- **RTL Support** - Fully Arabic interface with right-to-left layout
+- **Theming** - Light/dark mode with customizable color themes
+- **Responsive** - Desktop and mobile friendly
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/             # Auth pages (login)
+│   └── (home)/             # Protected pages (dashboard, data, reports, settings)
+├── components/
+│   ├── ui/                 # Shadcn/ui components
+│   ├── common/             # Shared components (table, modals, export)
+│   ├── features/           # Feature-specific components (data, posts)
+│   └── layouts/            # Sidebar, breadcrumbs, navigation
+├── store/                  # Zustand stores (auth, posts, theme)
+├── hooks/                  # Custom hooks (useAuth, useApi, usePermissions)
+├── context/                # React context providers (theme, sidebar)
+├── lib/                    # Utilities (axios client, token manager, date utils)
+├── types/                  # TypeScript type definitions
+└── styles/                 # Global CSS
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+git clone https://github.com/alaskarian0/courses-web.git
+cd courses-web
+npm install
+```
+
+### Environment Variables
+
+Copy the example env file and configure it:
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+NODE_ENV=development
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3003/api/
+NEXT_PUBLIC_API_FILE_URL=http://localhost:3003/
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at **http://localhost:4000** with Turbopack enabled for fast HMR.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### PM2 (Production)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project includes a PM2 ecosystem config for production deployment:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+pm2 start ecosystem.config.js
+```
 
-## Deploy on Vercel
+This will:
+- Run the app on port **4000**
+- Set production environment variables
+- Output logs to `./logs/`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Manual Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Build the project
+npm run build
+
+# Start with custom port
+PORT=4000 npm start
+```
+
+## API Integration
+
+The frontend connects to a REST API backend. Configure the API URL via environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_BASE_URL` | Base URL for API requests | `http://localhost:3001` |
+| `NEXT_PUBLIC_API_FILE_URL` | Base URL for file/media access | - |
+
+### API Features
+
+- Bearer token authentication
+- Automatic token refresh on 401 responses
+- Request retry with exponential backoff
+- 30-second request timeout
+- CORS with credentials
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server (port 4000, Turbopack) |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+## License
+
+MIT
