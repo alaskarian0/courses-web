@@ -145,6 +145,11 @@ The frontend connects to a REST API backend. Configure the API URL via environme
 | `npm start` | Start production server |
 | `npm run lint` | Run ESLint |
 
+## Contributors
+
+- [alaskarian0](https://github.com/alaskarian0)
+- [sajjad-basim9](https://github.com/sajjad-basim9)
+
 ## License
 
 MIT
