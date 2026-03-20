@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Users, TrendingUp, ShieldCheck, Loader2, Lock, AlertTriangle } from "lucide-react";
+import { GraduationCap, BookOpen, CalendarDays, ClipboardList, Loader2, Lock, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,9 +14,9 @@ import type { User, ChangePasswordData } from "@/store/auth/authTypes";
 import { toast } from "sonner";
 
 const features = [
-  { icon: Users, text: "إدارة السجلات والبيانات بكفاءة عالية" },
-  { icon: TrendingUp, text: "تقارير وتحليلات متعمقة وشاملة" },
-  { icon: ShieldCheck, text: "أمان بيانات على مستوى المؤسسة" },
+  { icon: BookOpen, text: "إنشاء وإدارة البرامج التدريبية والدورات وورش العمل" },
+  { icon: CalendarDays, text: "جدولة الجلسات التدريبية وتوزيع المتدربين على القاعات" },
+  { icon: ClipboardList, text: "متابعة طلبات الالتحاق والترشيح والموافقات" },
 ];
 
 export default function LoginPage() {
@@ -152,9 +152,9 @@ export default function LoginPage() {
                   "linear-gradient(135deg, var(--brand-gradient-b), var(--brand-gradient-a))",
               }}
             >
-              <Users className="h-5 w-5 text-white" />
+              <GraduationCap className="h-5 w-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-white">نظام الإدارة</span>
+            <span className="text-lg font-semibold text-white">نظام إدارة الدورات التدريبية</span>
           </div>
 
           {/* Features */}
@@ -171,7 +171,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <p className="text-xs text-white/45">
-            نظام الإدارة — منصة متكاملة لإدارة البيانات والسجلات
+            نظام إدارة الدورات التدريبية — منصة متكاملة لإدارة البرامج التدريبية والترشيح والجدولة
           </p>
         </div>
       </div>
@@ -193,7 +193,7 @@ export default function LoginPage() {
                       "linear-gradient(135deg, var(--brand-gradient-a), var(--brand-gradient-b))",
                   }}
                 >
-                  <Users className="h-7 w-7 text-white" />
+                  <GraduationCap className="h-7 w-7 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-bold">تسجيل الدخول</CardTitle>
                 <CardDescription>

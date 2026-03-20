@@ -2,8 +2,14 @@ import {
   Settings2,
   SquareTerminal,
   LucideIcon,
-  Database,
   FileText,
+  BookOpen,
+  Users,
+  ChartPie,
+  Megaphone,
+  ClipboardList,
+  UserCheck,
+  CalendarDays,
 } from "lucide-react";
 
 export interface NavItem {
@@ -34,25 +40,70 @@ export const navbarData: NavbarData = {
           url: "/",
           icon: SquareTerminal,
         },
+      ],
+    },
+    {
+      label: "إدارة التدريب",
+      items: [
         {
-          title: "الإعدادات",
-          url: "/settings",
-          icon: Settings2,
+          title: "البرامج التدريبية",
+          url: "/programs",
+          icon: BookOpen,
+        },
+        {
+          title: "المدربين",
+          url: "/instructors",
+          icon: UserCheck,
+        },
+        {
+          title: "جدولة الدورات",
+          url: "/scheduling",
+          icon: CalendarDays,
         },
       ],
     },
     {
-      label: "البيانات",
+      label: "التسجيل والترشيح",
       items: [
         {
-          title: "البيانات",
-          url: "/data",
-          icon: Database,
+          title: "الإعلانات التدريبية",
+          url: "/announcements",
+          icon: Megaphone,
         },
         {
-          title: "تقرير البيانات",
-          url: "/data-report",
+          title: "طلبات الالتحاق",
+          url: "/enrollment-requests",
+          icon: ClipboardList,
+        },
+      ],
+    },
+    {
+      label: "التقارير والإحصائيات",
+      items: [
+        {
+          title: "التقارير",
+          url: "/reports",
           icon: FileText,
+        },
+        {
+          title: "الإحصائيات",
+          url: "/statistics",
+          icon: ChartPie,
+        },
+      ],
+    },
+    {
+      label: "إدارة النظام",
+      items: [
+        {
+          title: "المستخدمين",
+          url: "/users",
+          icon: Users,
+        },
+        {
+          title: "الإعدادات",
+          url: "/settings",
+          icon: Settings2,
         },
       ],
     },
