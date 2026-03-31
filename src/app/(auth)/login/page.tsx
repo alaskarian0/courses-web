@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 const features = [
   { icon: BookOpen, text: "إنشاء وإدارة البرامج التدريبية والدورات وورش العمل" },
-  { icon: CalendarDays, text: "جدولة الجلسات التدريبية وتوزيع المتدربين على القاعات" },
+  { icon: CalendarDays, text: "جدولة الجلسات التدريبية وعرض تفاصيل الدورة" },
   { icon: ClipboardList, text: "متابعة طلبات الالتحاق والترشيح والموافقات" },
 ];
 

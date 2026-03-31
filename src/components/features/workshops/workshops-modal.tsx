@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { WorkshopRecord, WorkshopStatus } from "./workshops-types"
+import { WORKSHOP_STATUSES, WORKSHOP_LOCATIONS } from "@/mock-data/workshops-data"
 
 interface WorkshopsModalProps {
   open: boolean
@@ -26,18 +27,6 @@ interface WorkshopsModalProps {
   editingWorkshop: WorkshopRecord | null
   nextId: number
 }
-
-const statuses: WorkshopStatus[] = ["قادم", "جاري", "منتهي", "ملغي"]
-
-const locations = [
-  "قاعة التدريب 1",
-  "قاعة التدريب 2",
-  "قاعة المؤتمرات",
-  "مختبر الحاسوب",
-  "القاعة الرئيسية",
-  "غرفة الاجتماعات أ",
-  "غرفة الاجتماعات ب",
-]
 
 export default function WorkshopsModal({ open, onClose, onSave, editingWorkshop, nextId }: WorkshopsModalProps) {
   const [title, setTitle] = useState("")
@@ -142,7 +131,7 @@ export default function WorkshopsModal({ open, onClose, onSave, editingWorkshop,
                   <SelectValue placeholder="اختر الموقع" />
                 </SelectTrigger>
                 <SelectContent>
-                  {locations.map((loc) => (
+                  {WORKSHOP_LOCATIONS.map((loc) => (
                     <SelectItem key={loc} value={loc}>{loc}</SelectItem>
                   ))}
                 </SelectContent>
@@ -156,7 +145,7 @@ export default function WorkshopsModal({ open, onClose, onSave, editingWorkshop,
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {statuses.map((s) => (
+                  {WORKSHOP_STATUSES.map((s) => (
                     <SelectItem key={s} value={s}>{s}</SelectItem>
                   ))}
                 </SelectContent>

@@ -19,14 +19,13 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { WorkshopFilters } from "./workshops-types"
+import { WORKSHOP_STATUSES } from "@/mock-data/workshops-data"
 
 interface WorkshopFiltersModalProps {
   filters: WorkshopFilters
   onApply: (filters: WorkshopFilters) => void
   onReset: () => void
 }
-
-const statuses = ["قادم", "جاري", "منتهي", "ملغي"]
 
 export default function WorkshopFiltersModal({ filters, onApply, onReset }: WorkshopFiltersModalProps) {
   const [open, setOpen] = useState(false)
@@ -96,7 +95,7 @@ export default function WorkshopFiltersModal({ filters, onApply, onReset }: Work
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {statuses.map((s) => (
+                  {WORKSHOP_STATUSES.map((s) => (
                     <SelectItem key={s} value={s}>{s}</SelectItem>
                   ))}
                 </SelectContent>

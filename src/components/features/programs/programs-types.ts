@@ -15,6 +15,7 @@ export interface ProgramRecord {
   capacity: number
   registered: number
   status: ProgramStatus
+  createdAt: string
 }
 
 export interface ProgramFilters {

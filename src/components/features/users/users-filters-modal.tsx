@@ -18,25 +18,13 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { UserFilters } from "./users-types"
+import { USER_ROLES, USER_STATUSES, USER_DEPARTMENTS } from "@/mock-data/users-data"
 
 interface UserFiltersModalProps {
   filters: UserFilters
   onApply: (filters: UserFilters) => void
   onReset: () => void
 }
-
-const roles = ["مشرف", "مدرب", "موظف", "مدير"]
-const statuses = ["نشط", "معطل"]
-const departments = [
-  "تقنية المعلومات",
-  "الموارد البشرية",
-  "المالية",
-  "التسويق",
-  "الشؤون القانونية",
-  "العمليات",
-  "خدمة العملاء",
-  "الإدارة العليا",
-]
 
 export default function UserFiltersModal({ filters, onApply, onReset }: UserFiltersModalProps) {
   const [open, setOpen] = useState(false)
@@ -86,7 +74,7 @@ export default function UserFiltersModal({ filters, onApply, onReset }: UserFilt
                 <SelectTrigger><SelectValue placeholder="الكل" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {roles.map((r) => (<SelectItem key={r} value={r}>{r}</SelectItem>))}
+                  {USER_ROLES.map((r) => (<SelectItem key={r} value={r}>{r}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
@@ -99,7 +87,7 @@ export default function UserFiltersModal({ filters, onApply, onReset }: UserFilt
                 <SelectTrigger><SelectValue placeholder="الكل" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {departments.map((d) => (<SelectItem key={d} value={d}>{d}</SelectItem>))}
+                  {USER_DEPARTMENTS.map((d) => (<SelectItem key={d} value={d}>{d}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
@@ -112,7 +100,7 @@ export default function UserFiltersModal({ filters, onApply, onReset }: UserFilt
                 <SelectTrigger><SelectValue placeholder="الكل" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {statuses.map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
+                  {USER_STATUSES.map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>

@@ -48,41 +48,9 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 import DataPagination from "../data/data-pagination"
+import { useConfirmModal } from "@/components/common/confirm-modal"
 import type { Announcement, AnnouncementType } from "./enrollments-types"
-
-// ─── Dummy Programs (from /programs page) ────────────────────────────────────
-
-const AVAILABLE_PROGRAMS = [
-  { id: 1, title: "تطوير تطبيقات الويب المتقدمة", type: "دورة" as const },
-  { id: 2, title: "إدارة المشاريع الاحترافية PMP", type: "دورة" as const },
-  { id: 3, title: "التفكير الإبداعي وحل المشكلات", type: "ورشة عمل" as const },
-  { id: 4, title: "المحاسبة المالية المتقدمة", type: "دورة" as const },
-  { id: 5, title: "أمن المعلومات والحماية الرقمية", type: "ورشة عمل" as const },
-  { id: 6, title: "الذكاء الاصطناعي والتعلم الآلي", type: "دورة" as const },
-  { id: 7, title: "مهارات التواصل الفعّال", type: "ورشة عمل" as const },
-  { id: 8, title: "القانون التجاري والعقود", type: "دورة" as const },
-  { id: 9, title: "السلامة والصحة المهنية", type: "ورشة عمل" as const },
-  { id: 10, title: "إدارة الوقت والأولويات", type: "ورشة عمل" as const },
-  { id: 11, title: "تحليل البيانات باستخدام Python", type: "دورة" as const },
-  { id: 12, title: "إدارة الموارد البشرية", type: "دورة" as const },
-]
-
-// ─── Dummy Announcements ────────────────────────────────────────────────────
-
-const DUMMY_ANNOUNCEMENTS: Announcement[] = [
-  { id: 1, title: "تطوير تطبيقات الويب", type: "دورة", instructor: "أحمد الكاظمي", category: "تقنية", duration: "40 ساعة", startDate: "2025-04-10", endDate: "2025-05-10", location: "قاعة التدريب 1", capacity: 30, registered: 18, description: "دورة شاملة في تطوير تطبيقات الويب باستخدام أحدث التقنيات والأُطر البرمجية.", status: "مفتوح", linkedProgramId: 1, linkedProgramTitle: "تطوير تطبيقات الويب المتقدمة" },
-  { id: 2, title: "إدارة المشاريع الاحترافية PMP", type: "دورة", instructor: "سارة العلي", category: "إدارية", duration: "30 ساعة", startDate: "2025-04-15", endDate: "2025-05-15", location: "قاعة المؤتمرات", capacity: 25, registered: 22, description: "برنامج تدريبي معتمد للحصول على شهادة PMP.", status: "مفتوح", linkedProgramId: 2, linkedProgramTitle: "إدارة المشاريع الاحترافية PMP" },
-  { id: 3, title: "التفكير الإبداعي وحل المشكلات", type: "ورشة عمل", instructor: "نور الهاشمي", category: "تطوير ذاتي", duration: "3 ساعات", startDate: "2025-04-20", endDate: "2025-04-20", location: "قاعة التدريب 2", capacity: 20, registered: 8, description: "ورشة عمل تفاعلية لتطوير مهارات التفكير الإبداعي.", status: "مفتوح", linkedProgramId: 3, linkedProgramTitle: "التفكير الإبداعي وحل المشكلات" },
-  { id: 4, title: "المحاسبة المالية المتقدمة", type: "دورة", instructor: "محمد الحسيني", category: "مالية", duration: "20 ساعة", startDate: "2025-05-01", endDate: "2025-05-20", location: "قاعة التدريب 1", capacity: 20, registered: 15, description: "دورة متقدمة في المحاسبة المالية وفقاً للمعايير الدولية.", status: "مفتوح", linkedProgramId: 4, linkedProgramTitle: "المحاسبة المالية المتقدمة" },
-  { id: 5, title: "أمن المعلومات للموظفين", type: "ورشة عمل", instructor: "علي الموسوي", category: "تقنية", duration: "3 ساعات", startDate: "2025-04-25", endDate: "2025-04-25", location: "مختبر الحاسوب", capacity: 30, registered: 12, description: "ورشة توعوية حول أساسيات أمن المعلومات وحماية البيانات.", status: "مفتوح", linkedProgramId: 5, linkedProgramTitle: "أمن المعلومات والحماية الرقمية" },
-  { id: 6, title: "الذكاء الاصطناعي والتعلم الآلي", type: "دورة", instructor: "فاطمة الموسوي", category: "تقنية", duration: "50 ساعة", startDate: "2025-05-10", endDate: "2025-06-20", location: "مختبر الحاسوب", capacity: 20, registered: 19, description: "دورة تأسيسية في الذكاء الاصطناعي والتعلم العميق.", status: "مفتوح", linkedProgramId: 6, linkedProgramTitle: "الذكاء الاصطناعي والتعلم الآلي" },
-  { id: 7, title: "مهارات التواصل الفعّال", type: "ورشة عمل", instructor: "زينب العامري", category: "تطوير ذاتي", duration: "4 ساعات", startDate: "2025-05-05", endDate: "2025-05-05", location: "القاعة الرئيسية", capacity: 40, registered: 25, description: "ورشة عمل لتطوير مهارات التواصل الشفهي والكتابي.", status: "مفتوح", linkedProgramId: 7, linkedProgramTitle: "مهارات التواصل الفعّال" },
-  { id: 8, title: "القانون التجاري والعقود", type: "دورة", instructor: "حسن الربيعي", category: "قانونية", duration: "25 ساعة", startDate: "2025-05-15", endDate: "2025-06-05", location: "قاعة المؤتمرات", capacity: 20, registered: 20, description: "دورة متخصصة في القانون التجاري وصياغة العقود.", status: "مغلق", linkedProgramId: 8, linkedProgramTitle: "القانون التجاري والعقود" },
-  { id: 9, title: "السلامة والصحة المهنية", type: "ورشة عمل", instructor: "عمر الشمري", category: "صحة وسلامة", duration: "3 ساعات", startDate: "2025-04-28", endDate: "2025-04-28", location: "القاعة الرئيسية", capacity: 50, registered: 30, description: "ورشة توعوية حول إجراءات السلامة والصحة المهنية.", status: "مفتوح", linkedProgramId: 9, linkedProgramTitle: "السلامة والصحة المهنية" },
-  { id: 10, title: "إدارة الوقت والأولويات", type: "ورشة عمل", instructor: "ريم السعدي", category: "إدارية", duration: "3 ساعات", startDate: "2025-05-08", endDate: "2025-05-08", location: "غرفة الاجتماعات أ", capacity: 15, registered: 10, description: "ورشة عمل تطبيقية لتعلم أساليب إدارة الوقت.", status: "مفتوح", linkedProgramId: 10, linkedProgramTitle: "إدارة الوقت والأولويات" },
-  { id: 11, title: "تحليل البيانات باستخدام Python", type: "دورة", instructor: "أحمد الكاظمي", category: "تقنية", duration: "35 ساعة", startDate: "2025-06-01", endDate: "2025-07-01", location: "مختبر الحاسوب", capacity: 25, registered: 5, description: "دورة عملية في تحليل البيانات باستخدام Python وأدواتها.", status: "مفتوح", linkedProgramId: 11, linkedProgramTitle: "تحليل البيانات باستخدام Python" },
-  { id: 12, title: "إدارة الموارد البشرية", type: "دورة", instructor: "سارة العلي", category: "إدارية", duration: "20 ساعة", startDate: "2025-06-10", endDate: "2025-06-25", location: "قاعة التدريب 1", capacity: 20, registered: 0, description: "دورة في أساسيات إدارة الموارد البشرية الحديثة.", status: "مفتوح", linkedProgramId: null, linkedProgramTitle: "" },
-]
+import { AVAILABLE_PROGRAMS, DUMMY_ANNOUNCEMENTS } from "@/mock-data/enrollments-data"
 
 const categoriesList = ["تقنية", "إدارية", "مالية", "قانونية", "تطوير ذاتي", "صحة وسلامة"]
 const typesList: AnnouncementType[] = ["دورة", "ورشة عمل"]
@@ -109,6 +77,7 @@ const emptyFilters: AnnouncementFilters = { type: "", category: "", status: "" }
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function AnnouncementsList() {
+  const { openConfirm, ConfirmModal } = useConfirmModal()
   const [records, setRecords] = useState<Announcement[]>(DUMMY_ANNOUNCEMENTS)
   const [search, setSearch] = useState("")
   const [typeTab, setTypeTab] = useState("all")
@@ -219,8 +188,16 @@ export default function AnnouncementsList() {
   }
 
   const handleDelete = (ann: Announcement) => {
-    setRecords(prev => prev.filter(r => r.id !== ann.id))
-    toast.success(`تم حذف الإعلان "${ann.title}"`)
+    openConfirm({
+      title: "حذف الإعلان التدريبي",
+      message: `هل أنت متأكد من حذف "${ann.title}"؟ لا يمكن التراجع عن هذا الإجراء.`,
+      confirmText: "حذف",
+      variant: "destructive",
+      onConfirm: () => {
+        setRecords(prev => prev.filter(r => r.id !== ann.id))
+        toast.success(`تم حذف الإعلان "${ann.title}"`)
+      },
+    })
   }
 
   const handleOpenDetails = (ann: Announcement) => {
@@ -647,6 +624,8 @@ export default function AnnouncementsList() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <ConfirmModal />
     </div>
   )
 }

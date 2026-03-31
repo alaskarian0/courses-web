@@ -8,9 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trash2, Edit, Star } from "lucide-react"
 import type { InstructorRecord, InstructorStatus, InstructorType } from "./instructors-types"
+import { useConfirmModal } from "@/components/common/confirm-modal"
 
 interface InstructorsTableProps {
   records: InstructorRecord[]
@@ -43,9 +45,21 @@ function TableHeaderRow() {
 }
 
 export default function InstructorsTable({ records, onEdit, onDelete }: InstructorsTableProps) {
+  const { openConfirm, ConfirmModal } = useConfirmModal()
+
+  const handleDeleteClick = (inst: InstructorRecord) => {
+    openConfirm({
+      title: "حذف المدرب",
+      message: `هل أنت متأكد من حذف "${inst.name}"؟ لا يمكن التراجع عن هذا الإجراء.`,
+      confirmText: "حذف",
+      variant: "destructive",
+      onConfirm: () => onDelete(inst),
+    })
+  }
+
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader><TableHeaderRow /></TableHeader>
           <TableBody>
@@ -56,18 +70,19 @@ export default function InstructorsTable({ records, onEdit, onDelete }: Instruct
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <>
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader><TableHeaderRow /></TableHeader>
         <TableBody>
-          {records.map((inst) => (
+          {records.map((inst, idx) => (
             <TableRow key={inst.id}>
-              <TableCell className="font-medium">{inst.id}</TableCell>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{inst.name}</TableCell>
               <TableCell>
                 <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${typeColor[inst.type]}`}>
@@ -96,7 +111,7 @@ export default function InstructorsTable({ records, onEdit, onDelete }: Instruct
                   <Button variant="ghost" size="sm" onClick={() => onEdit(inst)}>
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => onDelete(inst)}>
+                  <Button variant="ghost" size="sm" onClick={() => handleDeleteClick(inst)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
@@ -105,6 +120,8 @@ export default function InstructorsTable({ records, onEdit, onDelete }: Instruct
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
+    <ConfirmModal />
+    </>
   )
 }

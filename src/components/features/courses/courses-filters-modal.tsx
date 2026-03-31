@@ -19,15 +19,13 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { CourseFilters } from "./courses-types"
+import { COURSE_CATEGORIES, COURSE_STATUSES } from "@/mock-data/courses-data"
 
 interface CourseFiltersModalProps {
   filters: CourseFilters
   onApply: (filters: CourseFilters) => void
   onReset: () => void
 }
-
-const categories = ["تقنية", "إدارية", "مالية", "قانونية", "تطوير ذاتي", "صحة وسلامة"]
-const statuses = ["مفتوح", "جاري", "مكتمل", "ملغي"]
 
 export default function CourseFiltersModal({ filters, onApply, onReset }: CourseFiltersModalProps) {
   const [open, setOpen] = useState(false)
@@ -97,7 +95,7 @@ export default function CourseFiltersModal({ filters, onApply, onReset }: Course
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {categories.map((c) => (
+                  {COURSE_CATEGORIES.map((c) => (
                     <SelectItem key={c} value={c}>{c}</SelectItem>
                   ))}
                 </SelectContent>
@@ -114,7 +112,7 @@ export default function CourseFiltersModal({ filters, onApply, onReset }: Course
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">الكل</SelectItem>
-                  {statuses.map((s) => (
+                  {COURSE_STATUSES.map((s) => (
                     <SelectItem key={s} value={s}>{s}</SelectItem>
                   ))}
                 </SelectContent>

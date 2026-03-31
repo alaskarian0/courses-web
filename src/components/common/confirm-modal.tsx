@@ -27,27 +27,32 @@ interface ConfirmModalProps {
 const variantConfig = {
   default: {
     icon: Info,
-    iconColor: "text-blue-600",
+    iconBg: "bg-blue-50 dark:bg-blue-950/30",
+    iconColor: "text-blue-600 dark:text-blue-400",
     confirmVariant: "default" as const,
   },
   destructive: {
     icon: XCircle,
-    iconColor: "text-red-600",
+    iconBg: "bg-red-50 dark:bg-red-950/30",
+    iconColor: "text-red-600 dark:text-red-400",
     confirmVariant: "destructive" as const,
   },
   success: {
     icon: CheckCircle,
-    iconColor: "text-green-600",
+    iconBg: "bg-green-50 dark:bg-green-950/30",
+    iconColor: "text-green-600 dark:text-green-400",
     confirmVariant: "default" as const,
   },
   warning: {
     icon: AlertCircle,
-    iconColor: "text-yellow-600",
+    iconBg: "bg-amber-50 dark:bg-amber-950/30",
+    iconColor: "text-amber-600 dark:text-amber-400",
     confirmVariant: "default" as const,
   },
   info: {
     icon: Info,
-    iconColor: "text-blue-600",
+    iconBg: "bg-blue-50 dark:bg-blue-950/30",
+    iconColor: "text-blue-600 dark:text-blue-400",
     confirmVariant: "default" as const,
   },
 };
@@ -73,38 +78,46 @@ export default function ConfirmModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-sm bg-card p-0 gap-0 overflow-hidden" dir="rtl" showCloseButton={false}>
+
+        {/* Header */}
+        <DialogHeader className="px-5 pt-5 pb-4 border-b">
           <div className="flex items-center gap-3">
-            <div className={`flex-shrink-0 ${config.iconColor}`}>
-              <IconComponent className="h-6 w-6" />
+            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${config.iconBg}`}>
+              <IconComponent className={`h-5 w-5 ${config.iconColor}`} />
             </div>
-            <DialogTitle className="text-lg font-semibold">
+            <DialogTitle className="text-base font-semibold leading-tight">
               {title}
             </DialogTitle>
           </div>
-          <DialogDescription className="text-base mt-3 text-right">
+        </DialogHeader>
+
+        {/* Body */}
+        <div className="px-5 py-4 space-y-4">
+          <DialogDescription className="text-sm text-right leading-relaxed">
             {message}
           </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex-row-reverse gap-2 sm:justify-start">
-          <Button
-            onClick={handleConfirm}
-            variant={config.confirmVariant}
-            disabled={isLoading}
-            className="min-w-[80px]"
-          >
-            {isLoading ? "جاري التحميل..." : confirmText}
-          </Button>
-          <Button
-            onClick={onClose}
-            variant="outline"
-            disabled={isLoading}
-            className="min-w-[80px]"
-          >
-            {cancelText}
-          </Button>
-        </DialogFooter>
+
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={onClose}
+              disabled={isLoading}
+            >
+              {cancelText}
+            </Button>
+            <Button
+              variant={config.confirmVariant}
+              className="flex-1"
+              onClick={handleConfirm}
+              disabled={isLoading}
+            >
+              {isLoading ? "جاري التحميل..." : confirmText}
+            </Button>
+          </div>
+        </div>
+
       </DialogContent>
     </Dialog>
   );

@@ -60,7 +60,7 @@ function TableHeaderRow() {
 export default function GradesTable({ grades }: GradesTableProps) {
   if (grades.length === 0) {
     return (
-      <Card dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableHeaderRow />
@@ -78,19 +78,19 @@ export default function GradesTable({ grades }: GradesTableProps) {
   }
 
   return (
-    <Card dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableHeaderRow />
         </TableHeader>
         <TableBody>
-          {grades.map((grade) => {
+          {grades.map((grade, idx) => {
             const pct = grade.totalPossible > 0
               ? Math.round((grade.totalObtained / grade.totalPossible) * 100)
               : 0
             return (
               <TableRow key={grade.id}>
-                <TableCell className="font-medium">{grade.id}</TableCell>
+                <TableCell className="font-medium">{idx + 1}</TableCell>
                 <TableCell className="font-medium">{grade.studentName}</TableCell>
                 <TableCell className="text-muted-foreground">{grade.studentDepartment}</TableCell>
                 <TableCell className="text-muted-foreground">{grade.programTitle}</TableCell>

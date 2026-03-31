@@ -81,7 +81,7 @@ export default function MarksTab({ marks, quizzes, onUpdateMarks, initialQuizId 
   }
 
   return (
-    <>
+    <div className="space-y-4">
       <div className="flex items-center gap-2">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -116,6 +116,6 @@ export default function MarksTab({ marks, quizzes, onUpdateMarks, initialQuizId 
         onSave={handleSaveMark}
         editingMark={editingMark}
       />
-    </>
+    </div>
   )
 }

@@ -8,40 +8,8 @@ import UsersTable from "./users-table"
 import UsersModal from "./users-modal"
 import UserFiltersModal from "./users-filters-modal"
 import DataPagination from "../data/data-pagination"
-import type { UserRecord, UserFilters, UserRole, UserStatus } from "./users-types"
-
-const names = [
-  "أحمد الكاظمي", "سارة العلي", "محمد الحسيني", "فاطمة الموسوي", "علي الجبوري",
-  "نور الهاشمي", "حسن الربيعي", "زينب العامري", "عمر الشمري", "ريم السعدي",
-  "يوسف الخزاعي", "مريم الطائي", "كريم البغدادي", "هدى النجفي", "سامر الكربلائي",
-  "لمياء الحلي", "طارق البصري", "دعاء الكوفي", "رائد السماوي", "أمل الديوانية",
-  "باسم العمارة", "سلمى الناصرية", "جاسم الموصلي", "نادية الأربيلي", "وليد السليمانية",
-]
-
-const roleList: UserRole[] = ["مشرف", "مدرب", "موظف", "مدير"]
-const statusList: UserStatus[] = ["نشط", "معطل"]
-const departments = [
-  "تقنية المعلومات", "الموارد البشرية", "المالية", "التسويق",
-  "الشؤون القانونية", "العمليات", "خدمة العملاء", "الإدارة العليا",
-]
-
-const DUMMY_USERS: UserRecord[] = names.map((name, i) => {
-  const month = ((i * 3) % 12) + 1
-  const day = (i % 28) + 1
-  const nameParts = name.split(" ")
-  const emailName = nameParts[0].toLowerCase()
-  return {
-    id: i + 1,
-    name,
-    email: `${emailName}${i + 1}@company.com`,
-    role: roleList[i % roleList.length],
-    department: departments[i % departments.length],
-    joinDate: `2024-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
-    status: i % 7 === 0 ? "معطل" : "نشط" as UserStatus,
-    coursesCount: (i * 3) % 8,
-    workshopsCount: (i * 2) % 6,
-  }
-})
+import type { UserRecord, UserFilters } from "./users-types"
+import { DUMMY_USERS } from "@/mock-data/users-data"
 
 const emptyFilters: UserFilters = { role: "", department: "", status: "" }
 

@@ -98,6 +98,7 @@ export default function ProgramsModal({ open, onClose, onSave, editingProgram, n
       capacity: Number(capacity),
       registered: editingProgram ? editingProgram.registered : 0,
       status: status as ProgramStatus,
+      createdAt: editingProgram ? editingProgram.createdAt : "",
     })
     handleClose()
   }

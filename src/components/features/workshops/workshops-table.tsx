@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trash2, Edit } from "lucide-react"
 import type { WorkshopRecord, WorkshopStatus } from "./workshops-types"
@@ -28,7 +29,7 @@ const statusColor: Record<WorkshopStatus, string> = {
 export default function WorkshopsTable({ records, onEdit, onDelete }: WorkshopsTableProps) {
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableRow>
@@ -52,12 +53,12 @@ export default function WorkshopsTable({ records, onEdit, onDelete }: WorkshopsT
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableRow>
@@ -74,11 +75,11 @@ export default function WorkshopsTable({ records, onEdit, onDelete }: WorkshopsT
           </TableRow>
         </TableHeader>
         <TableBody>
-          {records.map((ws) => {
+          {records.map((ws, idx) => {
             const capacityPercent = ws.capacity > 0 ? Math.round((ws.registered / ws.capacity) * 100) : 0
             return (
               <TableRow key={ws.id}>
-                <TableCell className="font-medium">{ws.id}</TableCell>
+                <TableCell className="font-medium">{idx + 1}</TableCell>
                 <TableCell className="font-medium">{ws.title}</TableCell>
                 <TableCell>{ws.facilitator}</TableCell>
                 <TableCell>{ws.location}</TableCell>
@@ -116,6 +117,6 @@ export default function WorkshopsTable({ records, onEdit, onDelete }: WorkshopsT
           })}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   )
 }

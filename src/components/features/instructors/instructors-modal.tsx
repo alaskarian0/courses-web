@@ -86,6 +86,7 @@ export default function InstructorsModal({ open, onClose, onSave, editingInstruc
       coursesCount: editingInstructor ? editingInstructor.coursesCount : 0,
       workshopsCount: editingInstructor ? editingInstructor.workshopsCount : 0,
       rating: editingInstructor ? editingInstructor.rating : 0,
+      createdAt: editingInstructor ? editingInstructor.createdAt : new Date().toISOString(),
     })
     handleClose()
   }

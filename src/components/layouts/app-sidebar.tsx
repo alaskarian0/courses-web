@@ -59,7 +59,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {filteredNavData.sections.map((section) => (
-          <NavGroup key={section.label} items={section.items} groupLabel={section.label} />
+          <NavGroup key={section.label} items={section.items} groupLabel={section.label} collapsible={section.collapsible} />
         ))}
       </SidebarContent>
       <SidebarFooter>

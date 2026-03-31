@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { Quiz, QuizStatus } from "./assessments-types"
-import { PROGRAM_LIST, QUIZ_STATUSES } from "./assessments-data"
+import { PROGRAM_LIST, QUIZ_STATUSES } from "@/mock-data/assessments-data"
 
 interface QuizModalProps {
   open: boolean
@@ -123,28 +123,40 @@ export default function QuizModal({ open, onClose, onSave, editingQuiz, nextId }
           {/* البرنامج التدريبي */}
           <div className="space-y-2">
             <Label>البرنامج التدريبي</Label>
-            <Select value={form.programId} onValueChange={handleProgramChange}>
-              <SelectTrigger className={errors.programId ? "border-destructive" : ""}>
-                <SelectValue placeholder="اختر البرنامج" />
-              </SelectTrigger>
-              <SelectContent>
-                {PROGRAM_LIST.map((p) => (
-                  <SelectItem key={p.id} value={String(p.id)}>
-                    {p.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {editingQuiz ? (
+              <p className="text-sm px-3 py-2 rounded-md bg-muted text-foreground border border-border">
+                {editingQuiz.programTitle}
+              </p>
+            ) : (
+              <Select value={form.programId} onValueChange={handleProgramChange}>
+                <SelectTrigger className={errors.programId ? "border-destructive" : ""}>
+                  <SelectValue placeholder="اختر البرنامج" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PROGRAM_LIST.map((p) => (
+                    <SelectItem key={p.id} value={String(p.id)}>
+                      {p.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           {/* عنوان الاختبار */}
           <div className="space-y-2">
             <Label>عنوان الاختبار</Label>
-            <Input
-              value={form.title}
-              onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
-              className={errors.title ? "border-destructive" : ""}
-            />
+            {editingQuiz ? (
+              <p className="text-sm px-3 py-2 rounded-md bg-muted text-foreground border border-border">
+                {form.title}
+              </p>
+            ) : (
+              <Input
+                value={form.title}
+                onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
+                className={errors.title ? "border-destructive" : ""}
+              />
+            )}
           </div>
 
           {/* الوصف */}

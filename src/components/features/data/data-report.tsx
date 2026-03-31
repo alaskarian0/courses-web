@@ -392,7 +392,7 @@ export default function DataReport() {
       dir="rtl"
     >
       {/* ── Sidebar ── */}
-      <aside className="w-[280px] flex-shrink-0 h-full flex flex-col overflow-hidden bg-card border-e border-border shadow-sm">
+      <aside className="w-[280px] flex-shrink-0 h-full flex flex-col overflow-hidden border-e border-border shadow-sm">
         {/* Header */}
         <div className="px-4 py-3 border-b border-border">
           <div className="flex items-center gap-2 mb-3">
@@ -527,7 +527,7 @@ export default function DataReport() {
         </div>
 
         {/* Footer actions */}
-        <div className="border-t border-border bg-card p-3 flex flex-col gap-2">
+        <div className="border-t border-border p-3 flex flex-col gap-2">
           <Button
             className="w-full h-8 text-xs"
             onClick={() => handlePrint()}

@@ -10,7 +10,10 @@ import {
   ClipboardList,
   UserCheck,
   CalendarDays,
-  ClipboardCheck,
+  Building2,
+  FileQuestion,
+  PenLine,
+  Award,
 } from "lucide-react";
 
 export interface NavItem {
@@ -25,6 +28,7 @@ export interface NavItem {
 export interface NavSection {
   label: string;
   items: NavItem[];
+  collapsible?: boolean;
 }
 
 export interface NavbarData {
@@ -45,6 +49,7 @@ export const navbarData: NavbarData = {
     },
     {
       label: "إدارة التدريب",
+      collapsible: true,
       items: [
         {
           title: "البرامج التدريبية",
@@ -62,14 +67,36 @@ export const navbarData: NavbarData = {
           icon: CalendarDays,
         },
         {
-          title: "التقييمات",
-          url: "/assessments",
-          icon: ClipboardCheck,
+          title: "القاعات التدريبية",
+          url: "/halls",
+          icon: Building2,
+        },
+      ],
+    },
+    {
+      label: "التقييمات",
+      collapsible: true,
+      items: [
+        {
+          title: "الاختبارات",
+          url: "/assessments/quizzes",
+          icon: FileQuestion,
+        },
+        {
+          title: "درجات الطلاب",
+          url: "/assessments/marks",
+          icon: PenLine,
+        },
+        {
+          title: "التقييم العام",
+          url: "/assessments/grades",
+          icon: Award,
         },
       ],
     },
     {
       label: "التسجيل والترشيح",
+      collapsible: true,
       items: [
         {
           title: "الإعلانات التدريبية",
@@ -85,6 +112,7 @@ export const navbarData: NavbarData = {
     },
     {
       label: "التقارير والإحصائيات",
+      collapsible: true,
       items: [
         {
           title: "التقارير",
@@ -139,7 +167,11 @@ export function getFilteredNavbarData(userRole?: string): NavbarData {
 }
 
 export function generateRouteLabels(data: NavbarData): Record<string, string> {
-  const labels: Record<string, string> = {};
+  const labels: Record<string, string> = {
+    "/programs/new": "إضافة برنامج",
+    "/instructors/new": "إضافة مدرب",
+    "/edit": "تعديل",
+  };
 
   const extract = (items: NavItem[]) => {
     items.forEach(item => {

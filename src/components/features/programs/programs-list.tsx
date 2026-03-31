@@ -1,125 +1,30 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus, Search } from "lucide-react"
 import ProgramsTable from "./programs-table"
-import ProgramsModal from "./programs-modal"
 import ProgramFiltersModal from "./programs-filters-modal"
 import DataPagination from "../data/data-pagination"
-import type { ProgramRecord, ProgramFilters, ProgramType, ProgramCategory, ProgramStatus } from "./programs-types"
-
-const courseTitles = [
-  "تطوير تطبيقات الويب",
-  "إدارة المشاريع الاحترافية PMP",
-  "المحاسبة المالية المتقدمة",
-  "القانون التجاري والعقود",
-  "مهارات القيادة والإدارة",
-  "أمن المعلومات والشبكات",
-  "تحليل البيانات باستخدام Python",
-  "إدارة الموارد البشرية",
-  "التسويق الرقمي",
-  "السلامة المهنية في بيئة العمل",
-  "تطوير تطبيقات الجوال",
-  "إدارة سلسلة الإمداد",
-  "التخطيط المالي والميزانيات",
-  "الامتثال والحوكمة المؤسسية",
-  "مهارات التفاوض والإقناع",
-  "الذكاء الاصطناعي والتعلم الآلي",
-  "إدارة الجودة الشاملة TQM",
-  "إعداد التقارير المالية IFRS",
-  "حماية البيانات الشخصية",
-  "تطوير الذات والإنتاجية",
-]
-
-const workshopTitles = [
-  "التفكير الإبداعي وحل المشكلات",
-  "أمن المعلومات للموظفين",
-  "كتابة التقارير الفنية",
-  "إدارة الوقت والأولويات",
-  "العمل الجماعي وبناء الفرق",
-  "مهارات التواصل الفعّال",
-  "أساسيات Excel المتقدم",
-  "التعامل مع ضغوط العمل",
-  "خدمة العملاء المتميزة",
-  "أساسيات إدارة المشاريع",
-  "التحول الرقمي في المؤسسات",
-  "مهارات كتابة المراسلات الرسمية",
-  "إدارة الاجتماعات بفاعلية",
-  "التخطيط الشخصي والمهني",
-  "مهارات التفاوض في بيئة العمل",
-]
-
-const instructors = [
-  "أحمد الكاظمي", "سارة العلي", "محمد الحسيني", "فاطمة الموسوي", "علي الجبوري",
-  "نور الهاشمي", "حسن الربيعي", "زينب العامري", "عمر الشمري", "ريم السعدي",
-]
-
-const locations = [
-  "قاعة التدريب 1", "قاعة التدريب 2", "قاعة المؤتمرات",
-  "مختبر الحاسوب", "القاعة الرئيسية", "غرفة الاجتماعات أ", "غرفة الاجتماعات ب",
-]
-
-const categoryList: ProgramCategory[] = ["تقنية", "إدارية", "مالية", "قانونية", "تطوير ذاتي", "صحة وسلامة"]
-const statusList: ProgramStatus[] = ["مفتوح", "جاري", "مكتمل", "ملغي"]
-const durations = ["10 ساعات", "15 ساعة", "20 ساعة", "25 ساعة", "30 ساعة", "35 ساعة", "40 ساعة", "50 ساعة"]
-
-const DUMMY_PROGRAMS: ProgramRecord[] = [
-  ...courseTitles.map((title, i) => {
-    const startMonth = (i % 12) + 1
-    const startDay = (i % 28) + 1
-    const endMonth = Math.min(startMonth + 1, 12)
-    const cap = 20 + ((i * 7) % 40)
-    return {
-      id: i + 1,
-      title,
-      type: "دورة" as ProgramType,
-      instructor: instructors[i % instructors.length],
-      category: categoryList[i % categoryList.length],
-      duration: durations[i % durations.length],
-      startDate: `2025-${String(startMonth).padStart(2, "0")}-${String(startDay).padStart(2, "0")}`,
-      endDate: `2025-${String(endMonth).padStart(2, "0")}-${String(Math.min(startDay + 15, 28)).padStart(2, "0")}`,
-      location: locations[i % locations.length],
-      capacity: cap,
-      registered: Math.min(cap, 5 + ((i * 3) % cap)),
-      status: statusList[i % statusList.length],
-    }
-  }),
-  ...workshopTitles.map((title, i) => {
-    const month = ((i + 3) % 12) + 1
-    const day = ((i * 2) % 28) + 1
-    const cap = 15 + ((i * 5) % 30)
-    return {
-      id: courseTitles.length + i + 1,
-      title,
-      type: "ورشة عمل" as ProgramType,
-      instructor: instructors[(i + 3) % instructors.length],
-      category: categoryList[(i + 2) % categoryList.length],
-      duration: `${3 + (i % 5)} ساعات`,
-      startDate: `2025-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
-      endDate: `2025-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
-      location: locations[(i + 1) % locations.length],
-      capacity: cap,
-      registered: Math.min(cap, 3 + ((i * 4) % cap)),
-      status: statusList[(i + 1) % statusList.length],
-    }
-  }),
-]
+import type { ProgramFilters } from "./programs-types"
+import { useProgramsStore } from "@/store/programs/programsStore"
 
 const emptyFilters: ProgramFilters = { type: "", dateFrom: "", dateTo: "", category: "", status: "" }
 
 export default function ProgramsList() {
-  const [records, setRecords] = useState<ProgramRecord[]>(DUMMY_PROGRAMS)
+  const router = useRouter()
+  const records = useProgramsStore((s) => s.records)
+  const remove = useProgramsStore((s) => s.remove)
+
   const [search, setSearch] = useState("")
   const [filters, setFilters] = useState<ProgramFilters>(emptyFilters)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingProgram, setEditingProgram] = useState<ProgramRecord | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
 
   const filtered = useMemo(() => {
-    return records.filter((r) => {
+    const result = records.filter((r) => {
       const q = search.toLowerCase()
       const matchesSearch =
         !q ||
@@ -136,6 +41,8 @@ export default function ProgramsList() {
 
       return matchesSearch && matchesType && matchesFrom && matchesTo && matchesCategory && matchesStatus
     })
+
+    return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   }, [records, search, filters])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage))
@@ -145,29 +52,6 @@ export default function ProgramsList() {
     const start = (safePage - 1) * perPage
     return filtered.slice(start, start + perPage)
   }, [filtered, safePage, perPage])
-
-  const handleSave = (program: ProgramRecord) => {
-    if (editingProgram) {
-      setRecords((prev) => prev.map((r) => (r.id === program.id ? program : r)))
-    } else {
-      setRecords((prev) => [...prev, program])
-    }
-    setEditingProgram(null)
-  }
-
-  const handleEdit = (program: ProgramRecord) => {
-    setEditingProgram(program)
-    setIsModalOpen(true)
-  }
-
-  const handleDelete = (program: ProgramRecord) => {
-    setRecords((prev) => prev.filter((r) => r.id !== program.id))
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setEditingProgram(null)
-  }
 
   return (
     <div className="space-y-6" dir="rtl">
@@ -190,13 +74,17 @@ export default function ProgramsList() {
           onReset={() => { setFilters(emptyFilters); setCurrentPage(1) }}
         />
 
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button onClick={() => router.push("/programs/new")}>
           <Plus className="ml-2 h-4 w-4" />
           إضافة برنامج
         </Button>
       </div>
 
-      <ProgramsTable records={paginated} onEdit={handleEdit} onDelete={handleDelete} />
+      <ProgramsTable
+        records={paginated}
+        onEdit={(p) => router.push(`/programs/${p.id}/edit`)}
+        onDelete={(p) => remove(p.id)}
+      />
 
       <DataPagination
         currentPage={safePage}
@@ -204,14 +92,6 @@ export default function ProgramsList() {
         perPage={perPage}
         onPageChange={setCurrentPage}
         onPerPageChange={setPerPage}
-      />
-
-      <ProgramsModal
-        open={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSave}
-        editingProgram={editingProgram}
-        nextId={records.length > 0 ? Math.max(...records.map((r) => r.id)) + 1 : 1}
       />
     </div>
   )

@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select"
 import { Edit, Trash2, Plus } from "lucide-react"
 import type { Quiz, QuizQuestion, QuestionType, QuizOption } from "./assessments-types"
-import { QUESTION_TYPES } from "./assessments-data"
+import { QUESTION_TYPES } from "@/mock-data/assessments-data"
 
 interface QuizQuestionsModalProps {
   open: boolean

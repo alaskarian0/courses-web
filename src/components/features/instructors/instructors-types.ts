@@ -14,6 +14,7 @@ export interface InstructorRecord {
   workshopsCount: number
   rating: number
   status: InstructorStatus
+  createdAt: string
 }
 
 export interface InstructorFilters {

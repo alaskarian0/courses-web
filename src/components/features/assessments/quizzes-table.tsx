@@ -70,7 +70,7 @@ export default function QuizzesTable({
 }: QuizzesTableProps) {
   if (quizzes.length === 0) {
     return (
-      <Card dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableHeaderRow />
@@ -88,15 +88,15 @@ export default function QuizzesTable({
   }
 
   return (
-    <Card dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableHeaderRow />
         </TableHeader>
         <TableBody>
-          {quizzes.map((quiz) => (
+          {quizzes.map((quiz, idx) => (
             <TableRow key={quiz.id}>
-              <TableCell className="font-medium">{quiz.id}</TableCell>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{quiz.title}</TableCell>
               <TableCell>{quiz.programTitle}</TableCell>
               <TableCell>{quiz.instructorName}</TableCell>

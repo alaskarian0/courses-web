@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import type { DataRecord } from "./data-types"
 
 interface DataTableProps {
@@ -17,7 +18,7 @@ interface DataTableProps {
 export default function DataTable({ records }: DataTableProps) {
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableRow>
@@ -34,12 +35,12 @@ export default function DataTable({ records }: DataTableProps) {
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableRow>
@@ -58,6 +59,6 @@ export default function DataTable({ records }: DataTableProps) {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   )
 }

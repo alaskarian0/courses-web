@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { UserRecord, UserRole, UserStatus } from "./users-types"
+import { USER_ROLES, USER_STATUSES, USER_DEPARTMENTS } from "@/mock-data/users-data"
 
 interface UsersModalProps {
   open: boolean
@@ -26,19 +27,6 @@ interface UsersModalProps {
   editingUser: UserRecord | null
   nextId: number
 }
-
-const roles: UserRole[] = ["مشرف", "مدرب", "موظف", "مدير"]
-const statuses: UserStatus[] = ["نشط", "معطل"]
-const departments = [
-  "تقنية المعلومات",
-  "الموارد البشرية",
-  "المالية",
-  "التسويق",
-  "الشؤون القانونية",
-  "العمليات",
-  "خدمة العملاء",
-  "الإدارة العليا",
-]
 
 export default function UsersModal({ open, onClose, onSave, editingUser, nextId }: UsersModalProps) {
   const [name, setName] = useState("")
@@ -100,7 +88,7 @@ export default function UsersModal({ open, onClose, onSave, editingUser, nextId 
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px]" dir="rtl">
+      <DialogContent className="sm:max-w-125" dir="rtl">
         <DialogHeader>
           <DialogTitle>{editingUser ? "تعديل المستخدم" : "إضافة مستخدم جديد"}</DialogTitle>
         </DialogHeader>
@@ -135,7 +123,7 @@ export default function UsersModal({ open, onClose, onSave, editingUser, nextId 
               <Select value={role} onValueChange={setRole}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {roles.map((r) => (<SelectItem key={r} value={r}>{r}</SelectItem>))}
+                  {USER_ROLES.map((r) => (<SelectItem key={r} value={r}>{r}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
@@ -144,7 +132,7 @@ export default function UsersModal({ open, onClose, onSave, editingUser, nextId 
               <Select value={status} onValueChange={setStatus}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {statuses.map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
+                  {USER_STATUSES.map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
@@ -155,7 +143,7 @@ export default function UsersModal({ open, onClose, onSave, editingUser, nextId 
               <Select value={department} onValueChange={(val) => { setDepartment(val); if (errors.department) setErrors((p) => ({ ...p, department: "" })) }}>
                 <SelectTrigger><SelectValue placeholder="اختر القسم" /></SelectTrigger>
                 <SelectContent>
-                  {departments.map((d) => (<SelectItem key={d} value={d}>{d}</SelectItem>))}
+                  {USER_DEPARTMENTS.map((d) => (<SelectItem key={d} value={d}>{d}</SelectItem>))}
                 </SelectContent>
               </Select>
               {errors.department && <p className="text-sm text-destructive">{errors.department}</p>}

@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Edit } from "lucide-react"
@@ -34,7 +35,7 @@ const roleColor: Record<UserRole, string> = {
 export default function UsersTable({ records, onEdit, onDelete }: UsersTableProps) {
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableRow>
@@ -58,12 +59,12 @@ export default function UsersTable({ records, onEdit, onDelete }: UsersTableProp
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableRow>
@@ -80,9 +81,9 @@ export default function UsersTable({ records, onEdit, onDelete }: UsersTableProp
           </TableRow>
         </TableHeader>
         <TableBody>
-          {records.map((user) => (
+          {records.map((user, idx) => (
             <TableRow key={user.id}>
-              <TableCell className="font-medium">{user.id}</TableCell>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{user.name}</TableCell>
               <TableCell className="text-muted-foreground">{user.email}</TableCell>
               <TableCell>
@@ -113,6 +114,6 @@ export default function UsersTable({ records, onEdit, onDelete }: UsersTableProp
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   )
 }

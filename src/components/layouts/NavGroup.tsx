@@ -23,6 +23,7 @@ import {
 export function NavGroup({
   items,
   groupLabel,
+  collapsible,
 }: {
   items: {
     title: string
@@ -35,6 +36,7 @@ export function NavGroup({
     }[]
   }[]
   groupLabel?: string
+  collapsible?: boolean
 }) {
   const pathname = usePathname()
 
@@ -43,10 +45,8 @@ export function NavGroup({
     return pathname === url || pathname.startsWith(url + "/")
   }
 
-  return (
-    <SidebarGroup>
-      {groupLabel && <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>}
-      <SidebarMenu>
+  const menuContent = (
+    <SidebarMenu>
         {items.map((item) =>
           item.items ? (
             <Collapsible
@@ -95,6 +95,30 @@ export function NavGroup({
           )
         )}
       </SidebarMenu>
+  )
+
+  if (collapsible) {
+    return (
+      <SidebarGroup>
+        <Collapsible defaultOpen className="group/section">
+          <SidebarGroupLabel asChild>
+            <CollapsibleTrigger className="flex w-full items-center justify-between hover:text-sidebar-accent-foreground">
+              {groupLabel}
+              <ChevronRight className="mr-auto h-3.5 w-3.5 transition-transform duration-200 group-data-[state=open]/section:rotate-90" />
+            </CollapsibleTrigger>
+          </SidebarGroupLabel>
+          <CollapsibleContent>
+            {menuContent}
+          </CollapsibleContent>
+        </Collapsible>
+      </SidebarGroup>
+    )
+  }
+
+  return (
+    <SidebarGroup>
+      {groupLabel && <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>}
+      {menuContent}
     </SidebarGroup>
   )
 }

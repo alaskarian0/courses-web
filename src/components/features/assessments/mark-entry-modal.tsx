@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { StudentQuizMark } from "./assessments-types"
-import { MARK_STATUSES } from "./assessments-data"
+import { MARK_STATUSES } from "@/mock-data/assessments-data"
 
 interface MarkEntryModalProps {
   open: boolean

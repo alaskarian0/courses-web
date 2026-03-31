@@ -42,9 +42,9 @@ export default function GradesTab({ grades }: GradesTabProps) {
   }, [filtered, safePage, perPage])
 
   return (
-    <>
+    <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-50">
           <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="ابحث بالطالب أو القسم أو البرنامج..."
@@ -69,6 +69,6 @@ export default function GradesTab({ grades }: GradesTabProps) {
         onPageChange={setCurrentPage}
         onPerPageChange={setPerPage}
       />
-    </>
+    </div>
   )
 }

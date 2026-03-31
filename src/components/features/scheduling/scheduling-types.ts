@@ -34,7 +34,6 @@ export interface AssignedStudent {
   employeeName: string
   employeeDepartment: string
   sessionId: number
-  seatNumber: number | null
 }
 
 export interface HallFilters {

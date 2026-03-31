@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { QuizFilters } from "./assessments-types"
-import { PROGRAM_LIST, QUIZ_STATUSES } from "./assessments-data"
+import { PROGRAM_LIST, QUIZ_STATUSES } from "@/mock-data/assessments-data"
 
 interface QuizzesFiltersModalProps {
   filters: QuizFilters

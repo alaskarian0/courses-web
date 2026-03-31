@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Plus } from "lucide-react"
 import { toast } from "sonner"
+import { useConfirmModal } from "@/components/common/confirm-modal"
 import DataPagination from "../data/data-pagination"
 import QuizzesTable from "./quizzes-table"
 import QuizModal from "./quiz-modal"
-import QuizQuestionsModal from "./quiz-questions-modal"
 import QuizzesFiltersModal from "./quizzes-filters-modal"
+import QuizForm from "./quiz-form"
+import QuizQuestionsPage from "./quiz-questions-page"
 import type { Quiz, QuizQuestion, QuizFilters } from "./assessments-types"
 
 interface QuizzesTabProps {
@@ -29,14 +31,14 @@ export default function QuizzesTab({
   onUpdateQuestions,
   onNavigateToMarks,
 }: QuizzesTabProps) {
+  const { openConfirm, ConfirmModal } = useConfirmModal()
   const [search, setSearch] = useState("")
   const [filters, setFilters] = useState<QuizFilters>(defaultFilters)
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingQuiz, setEditingQuiz] = useState<Quiz | null>(null)
-  const [questionsModalOpen, setQuestionsModalOpen] = useState(false)
-  const [selectedQuizForQuestions, setSelectedQuizForQuestions] = useState<Quiz | null>(null)
+  const [editingQuizFull, setEditingQuizFull] = useState<Quiz | null>(null)
+  const [questionsPageQuiz, setQuestionsPageQuiz] = useState<Quiz | null>(null)
 
   const filtered = useMemo(() => {
     let result = quizzes
@@ -67,55 +69,83 @@ export default function QuizzesTab({
 
   const nextId = quizzes.length > 0 ? Math.max(...quizzes.map((q) => q.id)) + 1 : 1
 
-  const handleSave = (quiz: Quiz) => {
-    const exists = quizzes.find((q) => q.id === quiz.id)
-    if (exists) {
-      onUpdateQuizzes(quizzes.map((q) => (q.id === quiz.id ? quiz : q)))
-      toast.success("تم تحديث الاختبار بنجاح")
-    } else {
-      onUpdateQuizzes([...quizzes, quiz])
-      toast.success("تم إضافة الاختبار بنجاح")
-    }
+  const handleAddSave = (quiz: Quiz) => {
+    onUpdateQuizzes([...quizzes, quiz])
+    toast.success("تم إضافة الاختبار بنجاح")
+  }
+
+  const handleEditSave = (quiz: Quiz) => {
+    onUpdateQuizzes(quizzes.map((q) => (q.id === quiz.id ? quiz : q)))
+    toast.success("تم تحديث الاختبار بنجاح")
+    setEditingQuizFull(null)
   }
 
   const handleEdit = (quiz: Quiz) => {
-    setEditingQuiz(quiz)
-    setIsModalOpen(true)
+    setEditingQuizFull(quiz)
   }
 
   const handleDelete = (quiz: Quiz) => {
-    onUpdateQuizzes(quizzes.filter((q) => q.id !== quiz.id))
-    onUpdateQuestions(questions.filter((q) => q.quizId !== quiz.id))
-    toast.success("تم حذف الاختبار بنجاح")
+    openConfirm({
+      title: "حذف الاختبار",
+      message: `هل أنت متأكد من حذف "${quiz.title}"؟ سيتم حذف جميع أسئلته. لا يمكن التراجع عن هذا الإجراء.`,
+      confirmText: "حذف",
+      variant: "destructive",
+      onConfirm: () => {
+        onUpdateQuizzes(quizzes.filter((q) => q.id !== quiz.id))
+        onUpdateQuestions(questions.filter((q) => q.quizId !== quiz.id))
+        toast.success("تم حذف الاختبار بنجاح")
+      },
+    })
   }
 
   const handleManageQuestions = (quiz: Quiz) => {
-    setSelectedQuizForQuestions(quiz)
-    setQuestionsModalOpen(true)
+    setQuestionsPageQuiz(quiz)
   }
 
-  const handleQuestionsUpdate = (updatedQuestions: QuizQuestion[]) => {
+  const handleQuestionsBack = (updatedQuestions: QuizQuestion[]) => {
     onUpdateQuestions(updatedQuestions)
 
-    if (selectedQuizForQuestions) {
+    if (questionsPageQuiz) {
       const quizQuestions = updatedQuestions.filter(
-        (q) => q.quizId === selectedQuizForQuestions.id
+        (q) => q.quizId === questionsPageQuiz.id
       )
       const newCount = quizQuestions.length
       const newTotal = quizQuestions.reduce((sum, q) => sum + q.points, 0)
 
       onUpdateQuizzes(
         quizzes.map((q) =>
-          q.id === selectedQuizForQuestions.id
+          q.id === questionsPageQuiz.id
             ? { ...q, questionsCount: newCount, totalMarks: newTotal }
             : q
         )
       )
     }
+
+    setQuestionsPageQuiz(null)
+  }
+
+  if (editingQuizFull) {
+    return (
+      <QuizForm
+        quiz={editingQuizFull}
+        onSave={handleEditSave}
+        onCancel={() => setEditingQuizFull(null)}
+      />
+    )
+  }
+
+  if (questionsPageQuiz) {
+    return (
+      <QuizQuestionsPage
+        quiz={questionsPageQuiz}
+        questions={questions}
+        onBack={handleQuestionsBack}
+      />
+    )
   }
 
   return (
-    <>
+    <div className="space-y-4">
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -141,10 +171,7 @@ export default function QuizzesTab({
           }}
         />
         <Button
-          onClick={() => {
-            setEditingQuiz(null)
-            setIsModalOpen(true)
-          }}
+          onClick={() => setIsModalOpen(true)}
         >
           <Plus className="h-4 w-4 ml-1" />
           إضافة اختبار
@@ -170,18 +197,12 @@ export default function QuizzesTab({
       <QuizModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={handleSave}
-        editingQuiz={editingQuiz}
+        onSave={handleAddSave}
+        editingQuiz={null}
         nextId={nextId}
       />
 
-      <QuizQuestionsModal
-        open={questionsModalOpen}
-        onClose={() => setQuestionsModalOpen(false)}
-        quiz={selectedQuizForQuestions}
-        questions={questions}
-        onUpdateQuestions={handleQuestionsUpdate}
-      />
-    </>
+      <ConfirmModal />
+    </div>
   )
 }

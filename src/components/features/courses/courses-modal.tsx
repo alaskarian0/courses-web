@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { CourseRecord, CourseCategory, CourseStatus } from "./courses-types"
+import { COURSE_CATEGORIES, COURSE_STATUSES } from "@/mock-data/courses-data"
 
 interface CoursesModalProps {
   open: boolean
@@ -26,9 +27,6 @@ interface CoursesModalProps {
   editingCourse: CourseRecord | null
   nextId: number
 }
-
-const categories: CourseCategory[] = ["تقنية", "إدارية", "مالية", "قانونية", "تطوير ذاتي", "صحة وسلامة"]
-const statuses: CourseStatus[] = ["مفتوح", "جاري", "مكتمل", "ملغي"]
 
 export default function CoursesModal({ open, onClose, onSave, editingCourse, nextId }: CoursesModalProps) {
   const [title, setTitle] = useState("")
@@ -132,7 +130,7 @@ export default function CoursesModal({ open, onClose, onSave, editingCourse, nex
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((c) => (
+                  {COURSE_CATEGORIES.map((c) => (
                     <SelectItem key={c} value={c}>{c}</SelectItem>
                   ))}
                 </SelectContent>
@@ -145,7 +143,7 @@ export default function CoursesModal({ open, onClose, onSave, editingCourse, nex
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {statuses.map((s) => (
+                  {COURSE_STATUSES.map((s) => (
                     <SelectItem key={s} value={s}>{s}</SelectItem>
                   ))}
                 </SelectContent>

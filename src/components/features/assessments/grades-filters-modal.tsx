@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { GradesFilters } from "./assessments-types"
-import { PROGRAM_LIST, GRADE_LEVELS } from "./assessments-data"
+import { PROGRAM_LIST, GRADE_LEVELS } from "@/mock-data/assessments-data"
 
 interface GradesFiltersModalProps {
   filters: GradesFilters

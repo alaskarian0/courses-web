@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Edit } from "lucide-react"
@@ -36,7 +37,7 @@ const statusColor: Record<CourseStatus, string> = {
 export default function CoursesTable({ records, onEdit, onDelete }: CoursesTableProps) {
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader>
             <TableRow>
@@ -59,12 +60,12 @@ export default function CoursesTable({ records, onEdit, onDelete }: CoursesTable
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader>
           <TableRow>
@@ -80,9 +81,9 @@ export default function CoursesTable({ records, onEdit, onDelete }: CoursesTable
           </TableRow>
         </TableHeader>
         <TableBody>
-          {records.map((course) => (
+          {records.map((course, idx) => (
             <TableRow key={course.id}>
-              <TableCell className="font-medium">{course.id}</TableCell>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{course.title}</TableCell>
               <TableCell>{course.instructor}</TableCell>
               <TableCell>
@@ -118,6 +119,6 @@ export default function CoursesTable({ records, onEdit, onDelete }: CoursesTable
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   )
 }

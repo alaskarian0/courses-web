@@ -51,9 +51,9 @@ export default function MarksTable({ marks, onEditMark }: MarksTableProps) {
               </TableCell>
             </TableRow>
           ) : (
-            marks.map((mark) => (
+            marks.map((mark, idx) => (
               <TableRow key={mark.id} className="transition-colors hover:bg-accent/50">
-                <TableCell className="font-medium">{mark.id}</TableCell>
+                <TableCell className="font-medium">{idx + 1}</TableCell>
                 <TableCell className="font-medium">{mark.studentName}</TableCell>
                 <TableCell className="text-muted-foreground">{mark.studentDepartment}</TableCell>
                 <TableCell>{mark.quizTitle}</TableCell>

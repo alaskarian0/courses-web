@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import { SlidersHorizontal } from "lucide-react"
 import type { MarksFilters, Quiz } from "./assessments-types"
-import { PROGRAM_LIST, MARK_STATUSES } from "./assessments-data"
+import { PROGRAM_LIST, MARK_STATUSES } from "@/mock-data/assessments-data"
 
 interface MarksFiltersModalProps {
   filters: MarksFilters

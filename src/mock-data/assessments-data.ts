@@ -1,4 +1,4 @@
-import type { Quiz, QuizQuestion, StudentQuizMark, ProgramGrade, QuizStatus, MarkStatus, GradeLevel, QuestionType } from "./assessments-types"
+import type { Quiz, QuizQuestion, StudentQuizMark, ProgramGrade, QuizStatus, MarkStatus, GradeLevel, QuestionType } from "@/components/features/assessments/assessments-types"
 
 // ─── Programs & Instructors (references from scheduling) ────────────────────
 

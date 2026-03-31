@@ -44,26 +44,7 @@ import {
 import { toast } from "sonner"
 import DataPagination from "../data/data-pagination"
 import type { EnrollmentRequest, RequestStatus, EnrollmentFilters } from "./enrollments-types"
-
-// ─── Dummy Requests ─────────────────────────────────────────────────────────
-
-const DUMMY_REQUESTS: EnrollmentRequest[] = [
-  { id: 1, announcementId: 1, announcementTitle: "تطوير تطبيقات الويب", announcementType: "دورة", employeeName: "يوسف الخزاعي", employeeDepartment: "تقنية المعلومات", requestDate: "2025-03-18", status: "قيد المراجعة", notes: "الموظف مهتم بتطوير مهاراته البرمجية", reviewedBy: "", reviewDate: "" },
-  { id: 2, announcementId: 1, announcementTitle: "تطوير تطبيقات الويب", announcementType: "دورة", employeeName: "باسم العمارة", employeeDepartment: "تقنية المعلومات", requestDate: "2025-03-18", status: "مقبول", notes: "", reviewedBy: "المشرف", reviewDate: "2025-03-19" },
-  { id: 3, announcementId: 2, announcementTitle: "إدارة المشاريع الاحترافية PMP", announcementType: "دورة", employeeName: "سارة العلي", employeeDepartment: "الموارد البشرية", requestDate: "2025-03-17", status: "مقبول", notes: "ترشيح من مدير القسم", reviewedBy: "المشرف", reviewDate: "2025-03-18" },
-  { id: 4, announcementId: 3, announcementTitle: "التفكير الإبداعي وحل المشكلات", announcementType: "ورشة عمل", employeeName: "كريم البغدادي", employeeDepartment: "المالية", requestDate: "2025-03-17", status: "قيد المراجعة", notes: "يرغب في تطوير مهارات حل المشكلات", reviewedBy: "", reviewDate: "" },
-  { id: 5, announcementId: 4, announcementTitle: "المحاسبة المالية المتقدمة", announcementType: "دورة", employeeName: "هدى النجفي", employeeDepartment: "التسويق", requestDate: "2025-03-16", status: "مرفوض", notes: "", reviewedBy: "المشرف", reviewDate: "2025-03-17" },
-  { id: 6, announcementId: 5, announcementTitle: "أمن المعلومات للموظفين", announcementType: "ورشة عمل", employeeName: "علي الجبوري", employeeDepartment: "الشؤون القانونية", requestDate: "2025-03-16", status: "قيد المراجعة", notes: "", reviewedBy: "", reviewDate: "" },
-  { id: 7, announcementId: 6, announcementTitle: "الذكاء الاصطناعي والتعلم الآلي", announcementType: "دورة", employeeName: "نور الهاشمي", employeeDepartment: "العمليات", requestDate: "2025-03-15", status: "مقبول", notes: "ذو خبرة تقنية", reviewedBy: "المشرف", reviewDate: "2025-03-16" },
-  { id: 8, announcementId: 7, announcementTitle: "مهارات التواصل الفعّال", announcementType: "ورشة عمل", employeeName: "حسن الربيعي", employeeDepartment: "خدمة العملاء", requestDate: "2025-03-15", status: "قيد المراجعة", notes: "يحتاج لتطوير مهارات التواصل مع العملاء", reviewedBy: "", reviewDate: "" },
-  { id: 9, announcementId: 2, announcementTitle: "إدارة المشاريع الاحترافية PMP", announcementType: "دورة", employeeName: "مريم الطائي", employeeDepartment: "الموارد البشرية", requestDate: "2025-03-14", status: "ملغي", notes: "تم الإلغاء بطلب من الموظف", reviewedBy: "", reviewDate: "" },
-  { id: 10, announcementId: 9, announcementTitle: "السلامة والصحة المهنية", announcementType: "ورشة عمل", employeeName: "لمياء الحلي", employeeDepartment: "العمليات", requestDate: "2025-03-14", status: "قيد المراجعة", notes: "", reviewedBy: "", reviewDate: "" },
-  { id: 11, announcementId: 1, announcementTitle: "تطوير تطبيقات الويب", announcementType: "دورة", employeeName: "طارق البصري", employeeDepartment: "خدمة العملاء", requestDate: "2025-03-13", status: "مرفوض", notes: "التخصص غير مناسب", reviewedBy: "المشرف", reviewDate: "2025-03-14" },
-  { id: 12, announcementId: 10, announcementTitle: "إدارة الوقت والأولويات", announcementType: "ورشة عمل", employeeName: "دعاء الكوفي", employeeDepartment: "الإدارة العليا", requestDate: "2025-03-13", status: "مقبول", notes: "", reviewedBy: "المشرف", reviewDate: "2025-03-14" },
-  { id: 13, announcementId: 3, announcementTitle: "التفكير الإبداعي وحل المشكلات", announcementType: "ورشة عمل", employeeName: "رائد السماوي", employeeDepartment: "العمليات", requestDate: "2025-03-12", status: "قيد المراجعة", notes: "", reviewedBy: "", reviewDate: "" },
-  { id: 14, announcementId: 6, announcementTitle: "الذكاء الاصطناعي والتعلم الآلي", announcementType: "دورة", employeeName: "سامر الكربلائي", employeeDepartment: "الشؤون القانونية", requestDate: "2025-03-12", status: "مرفوض", notes: "القسم غير ذي صلة", reviewedBy: "المشرف", reviewDate: "2025-03-13" },
-  { id: 15, announcementId: 4, announcementTitle: "المحاسبة المالية المتقدمة", announcementType: "دورة", employeeName: "جاسم الموصلي", employeeDepartment: "المالية", requestDate: "2025-03-11", status: "مقبول", notes: "ترشيح من مدير المالية", reviewedBy: "المشرف", reviewDate: "2025-03-12" },
-]
+import { DUMMY_REQUESTS } from "@/mock-data/enrollments-data"
 
 const statusDot: Record<RequestStatus, string> = {
   "قيد المراجعة": "bg-yellow-500",
@@ -150,7 +131,7 @@ export default function RequestsList() {
 
       {/* ── Toolbar ── */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-50">
           <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="ابحث بالاسم أو الدورة أو القسم..."
@@ -220,9 +201,9 @@ export default function RequestsList() {
                 </TableCell>
               </TableRow>
             ) : (
-              paginated.map((req) => (
+              paginated.map((req, idx) => (
                 <TableRow key={req.id} className={`transition-colors hover:bg-accent/50 ${statusRowTint[req.status]}`}>
-                  <TableCell className="font-medium">{req.id}</TableCell>
+                  <TableCell className="font-medium">{idx + 1}</TableCell>
                   <TableCell className="font-medium">{req.announcementTitle}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${req.announcementType === "دورة" ? "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800" : "bg-violet-100 text-violet-800 border-violet-300 dark:bg-violet-950/30 dark:text-violet-300 dark:border-violet-800"}`}>
@@ -264,7 +245,7 @@ export default function RequestsList() {
                                 <MessageSquare className="h-3.5 w-3.5" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent className="max-w-[200px] text-right">{req.notes}</TooltipContent>
+                            <TooltipContent className="max-w-50 text-right">{req.notes}</TooltipContent>
                           </Tooltip>
                         )}
                       </div>
@@ -280,7 +261,7 @@ export default function RequestsList() {
                                 <MessageSquare className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent className="max-w-[200px] text-right">{req.notes}</TooltipContent>
+                            <TooltipContent className="max-w-50 text-right">{req.notes}</TooltipContent>
                           </Tooltip>
                         )}
                       </div>
@@ -303,7 +284,7 @@ export default function RequestsList() {
 
       {/* ── Reject Confirmation Modal ── */}
       <Dialog open={reviewOpen} onOpenChange={setReviewOpen}>
-        <DialogContent className="sm:max-w-[400px]" dir="rtl">
+        <DialogContent className="sm:max-w-100" dir="rtl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-amber-500" />
@@ -323,7 +304,7 @@ export default function RequestsList() {
                   placeholder="أدخل سبب الرفض..."
                   value={reviewNotes}
                   onChange={(e) => setReviewNotes(e.target.value)}
-                  className="text-right min-h-[80px]"
+                  className="text-right min-h-20"
                 />
               </div>
               <div className="flex justify-start gap-2 pt-2">
@@ -337,7 +318,7 @@ export default function RequestsList() {
 
       {/* ── Filters Modal ── */}
       <Dialog open={filterOpen} onOpenChange={setFilterOpen}>
-        <DialogContent className="sm:max-w-[400px]" dir="rtl">
+        <DialogContent className="sm:max-w-100" dir="rtl">
           <DialogHeader>
             <DialogTitle>
               تصفية الطلبات

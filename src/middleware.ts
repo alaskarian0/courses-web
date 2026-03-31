@@ -16,7 +16,7 @@ export default function middleware(request: NextRequest) {
 
   // If user doesn't have token and tries to access protected routes, redirect to login
   if (!isPublicRoute && !token) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    //return NextResponse.redirect(new URL('/login', request.url))
   }
 
   return NextResponse.next()

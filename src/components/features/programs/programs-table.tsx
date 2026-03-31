@@ -8,10 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Edit } from "lucide-react"
 import type { ProgramRecord, ProgramStatus, ProgramType } from "./programs-types"
+import { useConfirmModal } from "@/components/common/confirm-modal"
 
 interface ProgramsTableProps {
   records: ProgramRecord[]
@@ -46,9 +48,21 @@ function TableHeaderRow() {
 }
 
 export default function ProgramsTable({ records, onEdit, onDelete }: ProgramsTableProps) {
+  const { openConfirm, ConfirmModal } = useConfirmModal()
+
+  const handleDeleteClick = (program: ProgramRecord) => {
+    openConfirm({
+      title: "حذف البرنامج",
+      message: `هل أنت متأكد من حذف "${program.title}"؟ لا يمكن التراجع عن هذا الإجراء.`,
+      confirmText: "حذف",
+      variant: "destructive",
+      onConfirm: () => onDelete(program),
+    })
+  }
+
   if (records.length === 0) {
     return (
-      <div className="border rounded-md" dir="rtl">
+      <Card className="overflow-hidden" dir="rtl">
         <Table>
           <TableHeader><TableHeaderRow /></TableHeader>
           <TableBody>
@@ -59,18 +73,19 @@ export default function ProgramsTable({ records, onEdit, onDelete }: ProgramsTab
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </Card>
     )
   }
 
   return (
-    <div className="border rounded-md" dir="rtl">
+    <>
+    <Card className="overflow-hidden" dir="rtl">
       <Table>
         <TableHeader><TableHeaderRow /></TableHeader>
         <TableBody>
-          {records.map((program) => (
+          {records.map((program, idx) => (
             <TableRow key={program.id}>
-              <TableCell className="font-medium">{program.id}</TableCell>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{program.title}</TableCell>
               <TableCell>
                 <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${typeColor[program.type]}`}>
@@ -105,7 +120,7 @@ export default function ProgramsTable({ records, onEdit, onDelete }: ProgramsTab
                   <Button variant="ghost" size="sm" onClick={() => onEdit(program)}>
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => onDelete(program)}>
+                  <Button variant="ghost" size="sm" onClick={() => handleDeleteClick(program)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
@@ -114,6 +129,8 @@ export default function ProgramsTable({ records, onEdit, onDelete }: ProgramsTab
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
+    <ConfirmModal />
+    </>
   )
 }

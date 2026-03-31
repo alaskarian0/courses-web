@@ -1,5 +1,5 @@
-import AssessmentsList from "@/components/features/assessments/assessments-list"
+import { redirect } from "next/navigation"
 
-export default function AssessmentsPage() {
-  return <AssessmentsList />
+export default function Page() {
+  redirect("/assessments/quizzes")
 }
